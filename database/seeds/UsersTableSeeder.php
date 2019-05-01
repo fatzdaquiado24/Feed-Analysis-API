@@ -18,7 +18,7 @@ class UsersTableSeeder extends Seeder
         HeadManager::truncate();
         HeadManager::create([
             'name' => 'Charles Salinas',
-            'email' => 'salinasandrei45@gmail.com',
+            'email' => 'admin@test.com',
             'password' => Hash::make('password')
         ]);
     }
