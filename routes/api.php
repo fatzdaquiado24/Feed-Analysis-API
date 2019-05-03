@@ -29,8 +29,22 @@ Route::group(['middleware' => ['api', 'multiauth:head manager']], function () {
     Route::resource('clients', 'ClientController')->except(['store']);
     Route::apiResource('chemists', 'ChemistController');
     Route::apiResource('receivers', 'ReceiverController');
+    Route::apiResource('certificate-releasers', 'CertificateReleaserController');
     Route::resource('appointment-dates', 'AppointmentDateController')->except('index');
 });
 
 Route::group(['middleware' => ['api', 'multiauth:client']], function () {
+    Route::resource('laboratory-analysis-requests', 'LaboratoryAnalysisRequestController')->only('store');
+});
+
+Route::group(['middleware' => ['api', 'multiauth:receiver,chemist,certificate releaser']], function () {
+    Route::resource('laboratory-analysis-requests', 'LaboratoryAnalysisRequestController')->only('index');
+});
+
+Route::group(['middleware' => ['api', 'multiauth:receiver,chemist']], function () {
+    Route::resource('laboratory-analysis-requests', 'LaboratoryAnalysisRequestController')->only('update');
+});
+
+Route::group(['middleware' => ['api', 'multiauth:chemist']], function () {
+    Route::resource('analysis-requests', 'AnalysisRequestController')->only('update');
 });

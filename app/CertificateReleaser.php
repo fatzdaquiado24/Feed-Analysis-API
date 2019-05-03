@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use SMartins\PassportMultiauth\HasMultiAuthApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Receiver extends Authenticatable
+class CertificateReleaser extends Authenticatable
 {
     use SoftDeletes, HasMultiAuthApiTokens;
 

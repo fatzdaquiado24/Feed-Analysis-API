@@ -16,6 +16,6 @@ class AppointmentDate extends Model
 
     public function getAppointedAttribute()
     {
-        return LaboratoryAnalysisRequest::where('appointment_date', $this->maximum_appointment)->count();
+        return LaboratoryAnalysisRequest::where('appointment_date', $this->date)->count();
     }
 }

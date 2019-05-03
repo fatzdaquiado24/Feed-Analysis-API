@@ -66,6 +66,11 @@ return [
             'driver' => 'passport',
             'provider' => 'receiver',
         ],
+
+        'certificate releaser' => [
+            'driver' => 'passport',
+            'provider' => 'certificate releaser',
+        ],
     ],
 
     /*
@@ -114,6 +119,11 @@ return [
         'receiver' => [
             'driver' => 'eloquent',
             'model' => App\Receiver::class,
+        ],
+
+        'certificate releaser' => [
+            'driver' => 'eloquent',
+            'model' => App\CertificateReleaser::class,
         ],
     ],
 

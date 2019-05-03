@@ -16,8 +16,8 @@ class CreateFeedAnalysisTestsTable extends Migration
         Schema::create('feed_analysis_tests', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('sample_name');
-            $table->unsignedBigInteger('chemist_id')->nullable();
-            $table->foreign('chemist_id')->references('id')->on('chemists');
+            $table->unsignedBigInteger('laboratory_analysis_request_id');
+            $table->foreign('laboratory_analysis_request_id')->references('id')->on('laboratory_analysis_requests');
         });
     }
 

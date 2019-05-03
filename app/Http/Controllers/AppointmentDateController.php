@@ -29,7 +29,7 @@ class AppointmentDateController extends Controller
     {
         $request->validate([
             'date' => 'required|date|after_or_equal:today|unique:appointment_dates',
-            'maximum_appointment' => 'required|integer|min:1|max:999',
+            'maximum_appointment' => 'required|integer|min:0|max:999',
         ]);
 
         $appointmentDate = new AppointmentDate();
@@ -68,7 +68,7 @@ class AppointmentDateController extends Controller
             $request->request->add(['date' => $appointmentDate->date]);
             $request->validate([
                 'date' => 'after_or_equal:today',
-                'maximum_appointment' => 'required|integer|min:1|max:999',
+                'maximum_appointment' => 'required|integer|min:0|max:999',
             ]);
             
             if($request->maximum_appointment < $appointmentDate->maximum_appointment) {

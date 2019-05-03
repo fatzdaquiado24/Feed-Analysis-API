@@ -131,7 +131,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'type' => 'required|string|in:client,head manager,chemist'
+            'type' => 'required|string|in:client,head manager,chemist,receiver,certificate releaser'
         ]);
 
         $http = new \GuzzleHttp\Client;

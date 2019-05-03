@@ -131,6 +131,20 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'feed_analysis_tests.*.sample_name' => [
+            'required' => 'Each feed analysis test\'s sample name is required',
+            'string' => 'Each feed analysis test\'s sample name must be a string'
+        ],
+        'feed_analysis_tests.*.analysis_requests' => [
+            'required' => 'Each feed analysis test must have an analysis request',
+            'array' => 'Each feed analysis test\'s analysis requests must be an array',
+            'min' => [
+                'array' => 'Each feed analysis test\'s analysis requests must have at least :min items.',
+            ],
+        ],
+        'feed_analysis_tests.*.analysis_requests.*' => [
+            'exists' => 'One of the selected analysis requests is invalid.'
+        ]
     ],
 
     /*

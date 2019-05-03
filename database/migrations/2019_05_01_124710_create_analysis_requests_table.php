@@ -18,6 +18,8 @@ class CreateAnalysisRequestsTable extends Migration
             $table->string('parameter');
             $table->string('method');
             $table->decimal('fee', 8, 2);
+            $table->unsignedBigInteger('chemist_id')->nullable();
+            $table->foreign('chemist_id')->references('id')->on('chemists');
             $table->unsignedBigInteger('feed_analysis_test_id');
             $table->foreign('feed_analysis_test_id')->references('id')->on('feed_analysis_tests');
         });
