@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\LaboratoryAnalysisRequest;
 use App\Http\Resources\LaboratoryAnalysisRequest as LaboratoryAnalysisRequestResource;
 use Dompdf\Dompdf;
+use App\Client;
 use Illuminate\Support\Facades\View;
 
 class CertificateController extends Controller
@@ -42,6 +43,11 @@ class CertificateController extends Controller
     {
         $laboratoryAnalysisRequest = new LaboratoryAnalysisRequestResource(LaboratoryAnalysisRequest::find($id));
         if($laboratoryAnalysisRequest) {
+            if(auth()->user() instanceof Client) {
+                if($laboratoryAnalysisRequest->client_id != auth()->user()->id) {
+                    return response()->json(['message' => 'You can only view your own reports'], 405);
+                }
+            }
             $pdf = new Dompdf();
             $pdf->loadHtml(View::make('certificate', ['data' => $laboratoryAnalysisRequest]));
             $pdf->render();

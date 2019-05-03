@@ -11,6 +11,7 @@ use App\ChemicalTest;
 use App\Receiver;
 use App\CertificateReleaser;
 use App\Chemist;
+use App\Client;
 use DB;
 
 class LaboratoryAnalysisRequestController extends Controller
@@ -29,6 +30,8 @@ class LaboratoryAnalysisRequestController extends Controller
             return LaboratoryAnalysisRequestResource::collection(LaboratoryAnalysisRequest::whereNotNull('receiver_id')->get());
         } else if(auth()->user() instanceof CertificateReleaser) {
             return LaboratoryAnalysisRequestResource::collection(LaboratoryAnalysisRequest::all());
+        } else if(auth()->user() instanceof Client) {
+            return LaboratoryAnalysisRequestResource::collection(LaboratoryAnalysisRequest::where('client_id', auth()->user()->id)->get());
         }
         return LaboratoryAnalysisRequestResource::collection(LaboratoryAnalysisRequest::all());
     }
