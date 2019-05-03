@@ -27,7 +27,7 @@
                 <b>Analysis Requested: </b>
                 @foreach($feed_analysis_test->analysis_requests as $analysis_request)
                     {{ $analysis_request->parameter }}{{ $loop->last ? '' : ', ' }}
-                @endforeach
+                @endforeach<br>
                 <b>Name of Sample: </b> {{ $feed_analysis_test->sample_name }}
             </div>
             <div class="column">
