@@ -37,7 +37,7 @@ Route::group(['middleware' => ['api', 'multiauth:client']], function () {
     Route::resource('laboratory-analysis-requests', 'LaboratoryAnalysisRequestController')->only('store');
 });
 
-Route::group(['middleware' => ['api', 'multiauth:receiver,chemist,certificate releaser']], function () {
+Route::group(['middleware' => ['api', 'multiauth:receiver,chemist,certificate releaser,client']], function () {
     Route::resource('laboratory-analysis-requests', 'LaboratoryAnalysisRequestController')->only('index');
 });
 
