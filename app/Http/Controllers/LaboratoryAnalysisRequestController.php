@@ -9,6 +9,7 @@ use App\LaboratoryAnalysisRequest;
 use App\Http\Resources\LaboratoryAnalysisRequest as LaboratoryAnalysisRequestResource;
 use App\ChemicalTest;
 use App\Receiver;
+use App\CertificateReleaser;
 use App\Chemist;
 use DB;
 
@@ -26,6 +27,8 @@ class LaboratoryAnalysisRequestController extends Controller
                 ->where('appointment_date', date('Y-m-d'))->get());
         } else if(auth()->user() instanceof Chemist) {
             return LaboratoryAnalysisRequestResource::collection(LaboratoryAnalysisRequest::whereNotNull('receiver_id')->get());
+        } else if(auth()->user() instanceof CertificateReleaser) {
+            return LaboratoryAnalysisRequestResource::collection(LaboratoryAnalysisRequest::all());
         }
         return LaboratoryAnalysisRequestResource::collection(LaboratoryAnalysisRequest::all());
     }

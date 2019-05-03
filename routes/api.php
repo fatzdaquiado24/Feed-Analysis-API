@@ -48,3 +48,7 @@ Route::group(['middleware' => ['api', 'multiauth:receiver,chemist']], function (
 Route::group(['middleware' => ['api', 'multiauth:chemist']], function () {
     Route::resource('analysis-requests', 'AnalysisRequestController')->only('update');
 });
+
+Route::group(['middleware' => ['api', 'multiauth:head manager,certificate releaser']], function () {
+    Route::resource('certificates', 'CertificateController')->only(['show']);
+});
