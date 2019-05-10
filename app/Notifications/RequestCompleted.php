@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\NexmoMessage;
 
-class AccountApproved extends Notification implements ShouldQueue
+class RequestCompleted extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -42,8 +42,8 @@ class AccountApproved extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Account Approved')
-            ->line('Your account has been approved. You can now log in to the system.')
+            ->subject('Request for Laboratory Analysis Complete')
+            ->line('Your request for laboratory analysis is now complete. You can now view your certificate online or get a printed certificate with signature on the Department of Agriculture office.')
             ->line('Thank you for using our application!');
     }
 
@@ -69,6 +69,6 @@ class AccountApproved extends Notification implements ShouldQueue
     public function toNexmo($notifiable)
     {
         return (new NexmoMessage)
-            ->content('Hi '.$notifiable->name.', Your account has been approved. You can now log in to the system.');
+            ->content('Hi '.$notifiable->name.', Your request for laboratory analysis is now complete. You can now view your certificate online or get a printed certificate with signature on the Department of Agriculture office.');
     }
 }

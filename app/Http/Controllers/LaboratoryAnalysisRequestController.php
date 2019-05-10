@@ -13,6 +13,7 @@ use App\CertificateReleaser;
 use App\Chemist;
 use App\Client;
 use DB;
+use App\Notifications\RequestCompleted;
 
 class LaboratoryAnalysisRequestController extends Controller
 {
@@ -23,14 +24,7 @@ class LaboratoryAnalysisRequestController extends Controller
      */
     public function index()
     {
-        if(auth()->user() instanceof Receiver) {
-            return LaboratoryAnalysisRequestResource::collection(LaboratoryAnalysisRequest::where('receiver_id', null)
-                ->where('appointment_date', date('Y-m-d'))->get());
-        } else if(auth()->user() instanceof Chemist) {
-            return LaboratoryAnalysisRequestResource::collection(LaboratoryAnalysisRequest::whereNotNull('receiver_id')->get());
-        } else if(auth()->user() instanceof CertificateReleaser) {
-            return LaboratoryAnalysisRequestResource::collection(LaboratoryAnalysisRequest::all());
-        } else if(auth()->user() instanceof Client) {
+        if(auth()->user() instanceof Client) {
             return LaboratoryAnalysisRequestResource::collection(LaboratoryAnalysisRequest::where('client_id', auth()->user()->id)->get());
         }
         return LaboratoryAnalysisRequestResource::collection(LaboratoryAnalysisRequest::all());
@@ -118,18 +112,47 @@ class LaboratoryAnalysisRequestController extends Controller
         $laboratoryAnalysisRequest = LaboratoryAnalysisRequest::find($id);
 
         if($laboratoryAnalysisRequest) {
-            // if($request->user() instanceof Receiver) {
-                if($laboratoryAnalysisRequest->receiver_id != null) {
+            if($request->user() instanceof Receiver) {
+                if($laboratoryAnalysisRequest->status != 'Sample Receiving') {
                     return response()->json(['message' => 'Sample(s) already received'], 422);
-                } else if($laboratoryAnalysisRequest->appointment_date != date('Y-m-d')) {
+                }
+                if($laboratoryAnalysisRequest->appointment_date != date('Y-m-d')) {
                     return response()->json(['message' => 'Can only accept sample(s) on requests with today\'s appointed date'], 422);
                 }
                 $laboratoryAnalysisRequest->receiver_id = $request->user()->id;
+                $laboratoryAnalysisRequest->status = 'Testing';
                 
                 if($laboratoryAnalysisRequest->save()) {
                     return response()->json(['message' => 'Request updated successfully'], 200);
                 }
-            // }
+            } else if ($request->user() instanceof Chemist) {
+                if($laboratoryAnalysisRequest->status == 'Sample Receiving') {
+                    return response()->json(['message' => 'Sample(s) not yet received'], 422);
+                }
+                if($laboratoryAnalysisRequest->status == 'Complete') {
+                    return response()->json(['message' => 'Testing already complete'], 422);
+                }
+                foreach($laboratoryAnalysisRequest->feed_analysis_tests as $feed_analysis_test) {
+                    foreach($feed_analysis_test->analysis_requests as $analysis_request) {
+                        if($analysis_request->result == null) {
+                            return response()->json(['message' => 'Please fill up all the results first'], 422);
+                        }
+                    }
+                }
+                $laboratoryAnalysisRequest->status = 'Complete';
+                
+                try {
+                    $laboratoryAnalysisRequest->save();
+                    $client = Client::find($laboratoryAnalysisRequest->client_id);
+                    $client->notify(new RequestCompleted());
+
+                    DB::commit();
+                    return response()->json(['message' => 'Request updated successfully'], 200);
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return response()->json(['message' => $e->getMessage()], 500);
+                }
+            }
             return response()->json(['message' => 'An error has occurred'], 500);
         } else {
             return response()->json(['message' => 'Request not found'], 404);

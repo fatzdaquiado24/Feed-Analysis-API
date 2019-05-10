@@ -16,6 +16,7 @@ class CreateLaboratoryAnalysisRequestsTable extends Migration
         Schema::create('laboratory_analysis_requests', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->date('appointment_date');
+            $table->enum('status', ['Sample Receiving', 'Testing', 'Complete']);
             $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')->on('clients');
             $table->timestamps();

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class LaboratoryAnalysisRequest extends Model
 {
     protected $fillable = [
-        'appointment_date', 'client_id', 'receiver_id', "chemist_id"
+        'appointment_date', 'client_id', 'status','receiver_id', "chemist_id"
     ];
 
     protected $hidden = [

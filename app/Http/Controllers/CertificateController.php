@@ -43,6 +43,9 @@ class CertificateController extends Controller
     {
         $laboratoryAnalysisRequest = new LaboratoryAnalysisRequestResource(LaboratoryAnalysisRequest::find($id));
         if($laboratoryAnalysisRequest) {
+            if($laboratoryAnalysisRequest->status != 'Complete') {
+                return response()->json(['message' => 'This request is not yet complete'], 422);
+            }
             if(auth()->user() instanceof Client) {
                 if($laboratoryAnalysisRequest->client_id != auth()->user()->id) {
                     return response()->json(['message' => 'You can only view your own reports'], 405);
