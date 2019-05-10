@@ -22,6 +22,7 @@ Route::group(['middleware' => ['api', 'multiauth:client,head manager']], functio
     Route::get('user', 'AuthController@user');
     Route::resource('chemical-tests', 'ChemicalTestController')->only('index');
     Route::resource('appointment-dates', 'AppointmentDateController')->only('index');
+    Route::resource('customer-feedbacks', 'CustomerFeedbackController')->only('index');
 });
 
 Route::group(['middleware' => ['api', 'multiauth:head manager']], function () {
@@ -31,10 +32,13 @@ Route::group(['middleware' => ['api', 'multiauth:head manager']], function () {
     Route::apiResource('receivers', 'ReceiverController');
     Route::apiResource('certificate-releasers', 'CertificateReleaserController');
     Route::resource('appointment-dates', 'AppointmentDateController')->except('index');
+    Route::resource('complaints', 'ComplaintController')->only('index', 'destroy');
 });
 
 Route::group(['middleware' => ['api', 'multiauth:client']], function () {
     Route::resource('laboratory-analysis-requests', 'LaboratoryAnalysisRequestController')->only('store');
+    Route::resource('customer-feedbacks', 'CustomerFeedbackController')->only('store', 'update');
+    Route::resource('complaints', 'ComplaintController')->only('store');
 });
 
 Route::group(['middleware' => ['api', 'multiauth:receiver,chemist,certificate releaser,client']], function () {
