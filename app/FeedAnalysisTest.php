@@ -19,4 +19,9 @@ class FeedAnalysisTest extends Model
     public function analysis_requests() {
         return $this->hasMany('App\AnalysisRequest');
     }
+
+    public function delete() {
+        $this->analysis_requests()->delete();
+        return parent::delete();
+    }
 }
