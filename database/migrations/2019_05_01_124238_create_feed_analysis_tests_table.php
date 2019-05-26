@@ -17,7 +17,7 @@ class CreateFeedAnalysisTestsTable extends Migration
             $table->bigIncrements('id');
             $table->string('sample_name');
             $table->unsignedBigInteger('laboratory_analysis_request_id');
-            $table->foreign('laboratory_analysis_request_id')->references('id')->on('laboratory_analysis_requests');
+            $table->foreign('laboratory_analysis_request_id')->references('id')->on('laboratory_analysis_requests')->onDelete('cascade');
         });
     }
 

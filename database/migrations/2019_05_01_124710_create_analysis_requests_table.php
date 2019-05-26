@@ -21,7 +21,7 @@ class CreateAnalysisRequestsTable extends Migration
             $table->unsignedBigInteger('chemist_id')->nullable();
             $table->foreign('chemist_id')->references('id')->on('chemists');
             $table->unsignedBigInteger('feed_analysis_test_id');
-            $table->foreign('feed_analysis_test_id')->references('id')->on('feed_analysis_tests');
+            $table->foreign('feed_analysis_test_id')->references('id')->on('feed_analysis_tests')->onDelete('cascade');
         });
     }
 
