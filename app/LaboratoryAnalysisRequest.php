@@ -25,4 +25,9 @@ class LaboratoryAnalysisRequest extends Model
     public function feed_analysis_tests() {
         return $this->hasMany('App\FeedAnalysisTest');
     }
+
+    public function delete() {
+        $this->feed_analysis_tests()->delete();
+        return parent::delete();
+    }
 }
