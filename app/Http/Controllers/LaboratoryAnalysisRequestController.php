@@ -167,6 +167,20 @@ class LaboratoryAnalysisRequestController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $laboratoryAnalysisRequest = LaboratoryAnalysisRequest::find($id);
+        if($laboratoryAnalysisRequest) {
+            if($laboratoryAnalysisRequest->status != 'Sample Receiving') {
+                return response()->json(['message' => 'Appointment already done'], 422);
+            }
+            if($laboratoryAnalysisRequest->appointment_date < date('Y-m-d')) {
+                return response()->json(['message' => 'Appointment date already passed'], 422);
+            }
+            if($laboratoryAnalysisRequest->delete()) {
+                return response()->json(['message' => 'Request deleted successfully'], 200);
+            }
+            return response()->json(['message' => 'An error has occurred'], 500);
+        } else {
+            return response()->json(['message' => 'Request not found'], 404);
+        }
     }
 }

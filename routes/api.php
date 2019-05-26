@@ -36,7 +36,7 @@ Route::group(['middleware' => ['api', 'multiauth:head manager']], function () {
 });
 
 Route::group(['middleware' => ['api', 'multiauth:client']], function () {
-    Route::resource('laboratory-analysis-requests', 'LaboratoryAnalysisRequestController')->only('store');
+    Route::resource('laboratory-analysis-requests', 'LaboratoryAnalysisRequestController')->only('store', 'destroy');
     Route::resource('customer-feedbacks', 'CustomerFeedbackController')->only('store', 'update');
     Route::resource('complaints', 'ComplaintController')->only('store');
 });
