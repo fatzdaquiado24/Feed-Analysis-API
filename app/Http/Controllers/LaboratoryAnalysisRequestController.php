@@ -175,7 +175,7 @@ class LaboratoryAnalysisRequestController extends Controller
             if($laboratoryAnalysisRequest->appointment_date < date('Y-m-d')) {
                 return response()->json(['message' => 'Appointment date already passed'], 422);
             }
-            if($laboratoryAnalysisRequest->delete()) {
+            if($laboratoryAnalysisRequest->feed_analysis_tests()->delete() && $laboratoryAnalysisRequest->delete()) {
                 return response()->json(['message' => 'Request deleted successfully'], 200);
             }
             return response()->json(['message' => 'An error has occurred'], 500);
